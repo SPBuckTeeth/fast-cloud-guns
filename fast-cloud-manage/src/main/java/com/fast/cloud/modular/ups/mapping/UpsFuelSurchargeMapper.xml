@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fast.cloud.modular.ups.dao.UpsFuelSurchargeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.fast.cloud.modular.ups.model.UpsFuelSurcharge">
+        <id column="id" property="id" />
+        <result column="effective_date" property="effectiveDate" />
+        <result column="surcharge" property="surcharge" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, effective_date, surcharge, create_time, update_time, status
+    </sql>
+
+    <select id="getUpsFuelSurcharge" resultMap="BaseResultMap" parameterType="com.baomidou.mybatisplus.plugins.Page">
+        SELECT *
+        FROM sys_ups_fuel_surcharge
+        WHERE 1 = 1
+        <if test="effectiveDate != null and effectiveDate !=''">
+            AND effective_date = #{effectiveDate}
+        </if>
+        <if test="surcharge != null and surcharge !=''">
+            AND surcharge = #{surcharge}
+        </if>
+        <choose>
+            <when test="orderByField != null and orderByField !=''">
+                <choose>
+                    <when test="isAsc == true">
+                        ORDER BY ${orderByField} ASC
+                    </when>
+                    <otherwise>
+                        ORDER BY ${orderByField} DESC
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                ORDER BY effective_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

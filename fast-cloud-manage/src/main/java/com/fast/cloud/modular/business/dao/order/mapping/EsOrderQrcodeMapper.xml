@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fast.cloud.modular.business.dao.order.EsOrderQrcodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.fast.cloud.modular.business.model.order.EsOrderQrcode">
+        <id column="id" property="id" />
+        <result column="batch" property="batch" />
+        <result column="qrcode" property="qrcode" />
+        <result column="order_id" property="orderId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, batch, qrcode, order_id, status, create_time, update_time
+    </sql>
+
+    <select id="getEsOrderQrcode" resultMap="BaseResultMap">
+        select * from es_order_qrcode where 1 = 1
+        <if test="beginTime != null and beginTime !='' and endTime != null and endTime != ''">
+            and (create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+        <if test="batch != null and batch !=''">
+            and batch like CONCAT('%',#{batch},'%')
+        </if>
+        <if test="status != null and status !=''">
+            and status = #{status}
+        </if>
+        <if test="orderId != null and orderId !=''">
+            and order_id = #{orderId}
+        </if>
+        <choose>
+            <when test="orderByField != null and orderByField !=''">
+                <choose>
+                    <when test="isAsc == true">
+                        order by ${orderByField} ASC
+                    </when>
+                    <otherwise>
+                        order by ${orderByField} DESC
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                order by update_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getEsOrderQrcode2" resultMap="BaseResultMap" parameterType="com.baomidou.mybatisplus.plugins.Page">
+        select * from es_order_qrcode where 1 = 1
+        <if test="beginTime != null and beginTime !='' and endTime != null and endTime != ''">
+            and (create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+        <if test="batch != null and batch !=''">
+            and batch like CONCAT('%',#{batch},'%')
+        </if>
+        <if test="status != null and status !=''">
+            and status = #{status}
+        </if>
+        <if test="orderId != null and orderId !=''">
+            and order_id = #{orderId}
+        </if>
+        <choose>
+            <when test="orderByField != null and orderByField !=''">
+                <choose>
+                    <when test="isAsc == true">
+                        order by ${orderByField} ASC
+                    </when>
+                    <otherwise>
+                        order by ${orderByField} DESC
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                order by update_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

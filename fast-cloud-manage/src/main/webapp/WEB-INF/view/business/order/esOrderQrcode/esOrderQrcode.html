@@ -1,0 +1,48 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>二维码生成管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#NameCon id="batch" name="批次" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#NameCon id="orderId" name="订单id" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#SelectCon id="status" name="状态" >
+                                    <option value="">选择状态</option>
+                                    <option value="0">未使用</option>
+                                    <option value="1">已使用</option>
+                                </#SelectCon>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="EsOrderQrcode.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="EsOrderQrcodeTableToolbar" role="group">
+                            @if(shiro.hasPermission("/esOrderQrcode/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="EsOrderQrcode.openAddEsOrderQrcode()"/>
+                            @}
+                            @if(shiro.hasPermission("/esOrderQrcode/update")){
+                                <#button name="修改" icon="fa-edit" clickFun="EsOrderQrcode.openEsOrderQrcodeDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/esOrderQrcode/delete")){
+                                <#button name="删除" icon="fa-remove" clickFun="EsOrderQrcode.delete()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="EsOrderQrcodeTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/business/order/esOrderQrcode/esOrderQrcode.js"></script>
+@}

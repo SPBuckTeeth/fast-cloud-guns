@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fast.cloud.modular.sysproduct.dao.ProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.fast.cloud.modular.sysproduct.model.Product">
+        <id column="id" property="id" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="service_platform" property="servicePlatform" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+        <result column="logo" property="logo" />
+        <result column="intro" property="intro" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, enterprise_name, service_platform, create_time, update_time, status, logo, intro
+    </sql>
+
+    <select id="getProductList" resultMap="BaseResultMap" parameterType="com.baomidou.mybatisplus.plugins.Page">
+        select * from sys_product where 1 = 1
+        <if test="beginTime != null and beginTime !='' and endTime != null and endTime != ''">
+            and (create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+        <if test="enterpriseName != null and enterpriseName !=''">
+            and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+        </if>
+        <if test="status != null and status !=''">
+            and status = #{status}
+        </if>
+        <if test="servicePlatform != null and servicePlatform !=''">
+            and service_platform = #{servicePlatform}
+        </if>
+        <choose>
+            <when test="orderByField != null and orderByField !=''">
+                <choose>
+                    <when test="isAsc == true">
+                        order by ${orderByField} ASC
+                    </when>
+                    <otherwise>
+                        order by ${orderByField} DESC
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                order by update_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="checkRepetition" parameterType="com.fast.cloud.modular.sysproduct.model.Product" resultType="long">
+        SELECT count(1)
+        FROM sys_product
+        WHERE (enterprise_name = #{enterpriseName} OR service_platform = #{servicePlatform})
+        <if test="id != null">AND id != #{id}</if>
+    </select>
+
+</mapper>

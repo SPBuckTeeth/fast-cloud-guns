@@ -1,0 +1,109 @@
+@layout("/common/_container.html"){
+<style>
+    .user-heading {
+        border-radius: 4px 4px 0 0;
+        -webkit-border-radius: 4px 4px 0 0;
+        text-align: center;
+    }
+
+    .user-heading img {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border: 10px solid rgba(255, 255, 255, 0.3);
+        display: inline-block;
+    }
+
+    .user-heading h1 {
+        font-size: 22px;
+        font-weight: 300;
+        margin-bottom: 5px;
+    }
+
+    .user-heading p {
+        font-size: 12px;
+    }
+</style>
+
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form id="myFormImage" enctype="multipart/form-data" target="hidden_frame" method="post" class="form-horizontal" role="form" >
+            <div class="form-horizontal">
+
+                <div class="row">
+                    <div class="col-sm-6 b-r">
+                        <label class="col-md-3 col-sm-3 control-label">产品logo:</label>
+                        <div class="col-md-9">
+                            <div class="user-heading">
+                                <input type="file" class="file-pos" id="logo" name="imageFile" style="display: none;">
+                                <input id="imageInput" name="head_img" value="http://od30d1cbk.bkt.clouddn.com/009c6c5a6a4fe9ec4efac08c46f6f043.jpg" type="hidden" />
+                                <img id="myImageFile" src="http://od30d1cbk.bkt.clouddn.com/009c6c5a6a4fe9ec4efac08c46f6f043.jpg" alt="">
+                            </div>
+                        </div>
+                        <!--<#avatar id="logo" name="产品logo" underline="true" avatarImg=""/>-->
+                    </div>
+
+                    <div class="col-sm-6">
+                                <#input id="enterpriseName" name="产品名称" underline="true"/>
+                                <#input id="servicePlatform" name="产品代码" underline="true"/>
+                                <#input id="intro" name="产品简介" underline="true"/>
+                    </div>
+                </div>
+
+                <div class="progress progress-striped" id="progressTipArea" style="margin-top: 20px;">
+                    <div id="progressBar" style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar progress-bar-info">
+                    </div>
+                </div>
+
+                <div class="row btn-group-m-t">
+                    <div class="col-sm-10">
+                        <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ProductInfoDlg.addSubmit()"/>
+                        <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ProductInfoDlg.close()"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <iframe style="display: none" name='hidden_frame' id="hidden_frame"></iframe>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/sysproduct/product/product_info.js"></script>
+<script src="${ctxPath}/static/js/common/common.js"></script>
+<script>
+    //图片上传
+    jQuery.checkall(false);
+
+    $('#myImageFile').click(function() {
+        $("#logo").click();
+    });
+
+    $('#logo').change(function() {
+        $("#myFormImage").attr("target", "hidden_frame");
+        var name = $("#logo").val().split(".");
+        var imageName = name[name.length - 1];
+        if (imageName != "jpg" && imageName != "JPG"
+            && imageName != "JPEG" && imageName != "JPEG"
+            && imageName != "png" && imageName != "PNG") {
+            $.notify("温馨提示", "图片必须为jpeg,jpg,png格式");
+            return;
+        }
+        var action = $("#myFormImage").attr("action");
+        $("#myFormImage").attr("action", Feng.ctxPath + "/file/iframeUploadTwo");
+        document.getElementById("myFormImage").submit();
+        $("#myFormImage").attr("action", action);
+        $("#myFormImage").attr("target", "");
+    });
+
+    function imageCallback(message, success) {
+        if (success == false) {
+            $.notify("温馨提示", "图片必须为gif,jpeg,jpg,png格式");
+        } else {
+            var url = decodeURIComponent(message);
+            $("#myImageFile").attr("src", url);
+        }
+    }
+</script>
+@}

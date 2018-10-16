@@ -1,0 +1,39 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <input type="hidden" id="id" value="${item.id}">
+            <input type="hidden" id="statusValue" value="${item.status}">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="effectiveDate" name="生效日期" value="${item.effectiveDate}" underline="true"/>
+                            <#input id="surcharge" name="附加率(%)" value="${item.surcharge}" />
+                </div>
+
+                <div class="col-sm-6">
+                    <#select id="status" name="状态" underline="true" value="${item.status}">
+                        <option value="0">有效</option>
+                        <option value="1">无效</option>
+                    </#select>
+                    <#input id="createTime" name="" value="${item.createTime}" underline="true" readonly="readonly"/>
+                    <#input id="updateTime" name="" value="${item.updateTime}" underline="true" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="UpsFuelSurchargeInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="UpsFuelSurchargeInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/ups/upsFuelSurcharge/upsFuelSurcharge_info.js"></script>
+<script>
+    laydate.render({
+        elem: '#effectiveDate'
+    });
+</script>
+@}

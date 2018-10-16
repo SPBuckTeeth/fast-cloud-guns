@@ -1,0 +1,112 @@
+@layout("/common/_container.html"){
+
+<style>
+    .user-heading {
+        border-radius: 4px 4px 0 0;
+        -webkit-border-radius: 4px 4px 0 0;
+        text-align: center;
+    }
+
+    .user-heading img {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border: 10px solid rgba(255, 255, 255, 0.3);
+        display: inline-block;
+    }
+
+    .user-heading h1 {
+        font-size: 22px;
+        font-weight: 300;
+        margin-bottom: 5px;
+    }
+
+    .user-heading p {
+        font-size: 12px;
+    }
+</style>
+
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form id="myFormImage" enctype="multipart/form-data" target="hidden_frame" method="post" class="form-horizontal" role="form" >
+            <div class="form-horizontal">
+
+                <input type="hidden" id="id" value="${item.id}">
+                <input type="hidden" id="statusValue" value="${item.status}">
+
+                <div class="row">
+                    <div class="col-sm-6 b-r">
+                        <label class="col-md-3 col-sm-3 control-label">产品logo:</label>
+                        <div class="col-md-9">
+                            <div class="user-heading">
+                                <input type="file" class="file-pos" id="logo" name="imageFile" style="display: none;">
+                                <input id="imageInput" name="head_img" value="${item.logo}" type="hidden" />
+                                <img id="myImageFile" src="${item.logo}" alt="">
+                            </div>
+                        </div>
+                        <#input id="createTime" name="创建时间" value="${item.createTime}" underline="true" readonly="readonly"/>
+                        <#input id="updateTime" name="更新时间" value="${item.updateTime}" readonly="readonly"/>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <#input id="enterpriseName" name="产品名称" underline="true" value="${item.enterpriseName}"/>
+                        <#input id="servicePlatform" name="产品代码" underline="true" value="${item.servicePlatform}"/>
+                        <#input id="intro" name="产品简介" underline="true" value="${item.intro}"/>
+                        <#select id="status" name="状态" underline="true" value="${item.status}">
+                            <option value="0">有效</option>
+                            <option value="1">无效</option>
+                        </#select>
+                    </div>
+                </div>
+
+                <div class="row btn-group-m-t">
+                    <div class="col-sm-10">
+                        <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ProductInfoDlg.editSubmit()"/>
+                        <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ProductInfoDlg.close()"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <iframe style="display: none" name='hidden_frame' id="hidden_frame"></iframe>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/sysproduct/product/product_info.js"></script>
+<script src="${ctxPath}/static/js/common/common.js"></script>
+<script>
+    //图片上传
+    jQuery.checkall(false);
+
+    $('#myImageFile').click(function() {
+        $("#logo").click();
+    });
+
+    $('#logo').change(function() {
+        $("#myFormImage").attr("target", "hidden_frame");
+        var name = $("#logo").val().split(".");
+        var imageName = name[name.length - 1];
+        if (imageName != "jpg" && imageName != "JPG"
+            && imageName != "JPEG" && imageName != "JPEG"
+            && imageName != "png" && imageName != "PNG") {
+            $.notify("温馨提示", "图片必须为jpeg,jpg,png格式");
+            return;
+        }
+        var action = $("#myFormImage").attr("action");
+        $("#myFormImage").attr("action", Feng.ctxPath + "/file/iframeUploadTwo");
+        document.getElementById("myFormImage").submit();
+        $("#myFormImage").attr("action", action);
+        $("#myFormImage").attr("target", "");
+    });
+
+    function imageCallback(message, success) {
+        if (success == false) {
+            $.notify("温馨提示", "图片必须为gif,jpeg,jpg,png格式");
+        } else {
+            var url = decodeURIComponent(message);
+            $("#myImageFile").attr("src", url);
+        }
+    }
+</script>
+@}

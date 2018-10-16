@@ -1,0 +1,43 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <input type="hidden" id="id" value="${item.id}">
+            <input type="hidden" id="statusValue" value="${item.status}">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <label class="col-md-3 col-sm-3 control-label">二维码:</label>
+                    <a href="${item.qrcode}" target="_blank">
+                        <img src="${item.qrcode}" class="img-circle message-avatar" style="width: 120px;height:120px;"/>
+                    </a>
+                    <div class="hr-line-dashed"></div>
+                    <#input id="batch" name="批次" value="${item.batch}" underline="true" readonly="readonly"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="orderId" name="订单id" value="${item.orderId}" underline="true"/>
+
+                    <#select id="status" name="状态" underline="true" value="${item.status}">
+                        <option value="0">未使用</option>
+                        <option value="1">已使用</option>
+                    </#select>
+
+                    <#input id="createTime" name="创建时间" value="${item.createTime}" underline="true" readonly="readonly"/>
+                    <#input id="updateTime" name="更新时间" value="${item.updateTime}" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="EsOrderQrcodeInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="EsOrderQrcodeInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/business/order/esOrderQrcode/esOrderQrcode_info.js"></script>
+@}

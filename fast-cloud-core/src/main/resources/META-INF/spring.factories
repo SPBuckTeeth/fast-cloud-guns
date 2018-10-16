@@ -1,0 +1,6 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.fast.cloud.core.base.controller.GlobalController,\
+com.fast.cloud.core.config.DefaultFastjsonConfig,\
+com.fast.cloud.core.config.DefaultProperties,\
+com.fast.cloud.core.config.DefaultWebConfig
